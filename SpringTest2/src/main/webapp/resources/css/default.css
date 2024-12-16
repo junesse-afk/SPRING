@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+#top_menu {
+	text-align: right;
+}
+
+#main_menu {
+	text-align: center;
+}
+
+#footer_area {
+	text-align: center;
+}
+
+article {
+	text-align: center;
+}
