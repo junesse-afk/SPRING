@@ -2,7 +2,6 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
 	<!-- http://java.sun.com/xml/ns/javaee -->
 
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
@@ -26,7 +25,12 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
 	<!-- 톰캣 9.x 이하 사용 시 POST 방식 파라미터에 대한 한글 등의 인코딩 처리를 위한 필터 설정 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -36,10 +40,10 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-		
-	<servlet-mapping>
-		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
+	
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 </web-app>

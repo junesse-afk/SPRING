@@ -8,6 +8,5 @@
 </head>
 <body>
 	<h1>test2.jsp</h1>
-
 </body>
 </html>

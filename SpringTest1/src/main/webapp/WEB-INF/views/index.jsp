@@ -7,10 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>안녕하세요!</h1>
-<!-- test 서블리 주소 요청 시 webapp/test/test.jsp 페이지로 포워딩 -->
-<h3><a href="test">test 서블릿 주소 요청</a></h3>
-<!-- BoardWrite 서블릿 주소 요청 시 BoardList 서블릿 주소로 리다이렉트 -->
-<h3><a href="BoardWrite">글쓰기 작업 요청</a></h3>
+
+	<h1>index.jsp</h1>
+	<!-- test 서블릿 주소 요청 시 webapp/test/test.jsp 페이지로 포워딩 -->
+	<h3><a href="test">test 서블릿 주소 요청</a></h3>
+	<!-- BoardWrite 서블릿 주소 요청 시 BoardList 서블릿 주소로 리다이렉트 -->
+	<h3><a href="BoardWrite">글쓰기 작업 요청</a></h3>
+
 </body>
 </html>

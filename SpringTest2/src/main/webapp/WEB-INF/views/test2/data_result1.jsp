@@ -13,10 +13,13 @@
 	</header>
 
 	<article>
-		<h1>redirect.jsp</h1>
-		<form action="redirect2" method="post">
-			<input type="submit" value="redirect2 서블릿 요청(POST)">
-		</form>
+		<h1>redirect2.jsp</h1>
+		<h3>
+			name: ${param.name }<br>
+			age: ${param.age }<br>
+			gender: ${param.gender }<br>
+			hiddenValue: ${param.hiddenValue }<br>
+		</h3>
 	</article>
 	
 	
