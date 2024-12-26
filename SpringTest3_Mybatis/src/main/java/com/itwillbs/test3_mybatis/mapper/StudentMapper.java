@@ -1,5 +1,7 @@
 package com.itwillbs.test3_mybatis.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.itwillbs.test3_mybatis.vo.StudentVO;
@@ -24,4 +26,10 @@ public interface StudentMapper {
         int registStudent(StudentVO student);
 		// => SudentMapper.xml 파일의 id 속성값이 
 		//"registStudent"인 태그를 찾아서 SQL구문 실행
+        
+        //학생 상세 정보 조회
+        StudentVO getstudentInfo(String idx);
+        
+        //학생 정보 조회
+        List<StudentVO> getstudentList();
 }

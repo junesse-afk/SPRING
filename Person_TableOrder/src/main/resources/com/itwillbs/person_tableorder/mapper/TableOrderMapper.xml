@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 마이바티스에서 실행할 SQL 구문을 갖는 xxxMapper.xml 파일 정의
+-> 실행할 각 구문의 이름을 태그로 제공함(insert, update, delete, select 등)
+   (내부적으로 PreparedStatement 객체를 통해 SQL구문을 실행함)
+-> 주의! mapper 태그 내의 namespace 속성에 현재 XML파일과 연결된 자바 인터페이스를 명시
+-> 주의! 각 태그 내의 id속성에 지정될 이름은 Mapper 인터페이스 내의 메서드명과 일치해야한다!
+ -->
+ 
+ <mapper namespace="com.itwillbs.person_tableorder.mapper.TableOrderMapper">
+ <!-- insert 태그 기본 문법 -->
+ <!-- <insert id="메서드명">실행할 INSERT 구문</insert> -->
+ <!-- 단, 자바의 JDBC PreparedStatement 객체 사용 시 파라미터를 ?로 처리했으나
+ 마이바티에서는 #{파라미터명}으로 데이터를 표시(별도의 치환과정 불필요) --> 
+ 
+ <!-- 학생정보 등록 - INSERT -->
+ <insert id="registStudent">
+ INSERT INTO STUDENT
+ 	  ( IDX
+ 	  , NAME)
+ VALUES (#{idx} -- 단일 객체이므로 student.idx 대신 idx만 지정
+ 	  , #{name}) -- 단일 객체이므로 student.naem 대신 name만 지정
+ </insert>
+ 
+ 
+ </mapper>

@@ -1,5 +1,7 @@
 package com.itwillbs.test3_mybatis.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,13 @@ public class StudentService {
 		
 	}
 	
+	public StudentVO getstudentInfo(String idx) {
+		return mapper.getstudentInfo(idx);
+	}
 	
+	public List<StudentVO> getstudentList() {
+		return mapper.getstudentList();
+	}
 	
 
 }

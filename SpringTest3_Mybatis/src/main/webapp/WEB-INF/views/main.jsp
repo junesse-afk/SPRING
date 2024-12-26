@@ -17,8 +17,15 @@
 		<form action="studentInfo" method="get">
 			<input type="text" name="idx" placeholder="학생번호입력">
 			<input type="submit" value="학생정보조회">
-		
-		
+		<hr>
+		<h3><a href="registProduct">상품정보등록</a></h3>
+		<%-- 상품(Product) --%>
+		<form action="productInfo" method="get">
+			<input type="text" name="product_id" placeholder="상품번호입력">
+			<input type="submit" value="상품정보조회">
+		</form>
+		<hr>
+		<h3><a href="productList">상품목록조회</a></h3>
 		</form>
 	</div>
 

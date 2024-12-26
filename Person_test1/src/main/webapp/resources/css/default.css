@@ -1,0 +1,31 @@
+@charset "UTF-8";
+/* ----- top.jsp ----- */
+#top_menu {
+	text-align: right;
+}
+
+#main_menu {
+	text-align: center; 
+}
+
+/* ----- footer.jsp ----- */
+#footer_area {
+	text-align: center; 
+}
+
+/* ----- 공통 ----- */
+article {
+	min-height: 200px;
+}
+
+article h1, article h3 {
+	text-align: center; 
+}
+
+
+
+
+
+
+
+

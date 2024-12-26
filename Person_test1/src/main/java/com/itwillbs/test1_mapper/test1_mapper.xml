@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.itwillbs.test1.mapper.test1_mapper">
+ <!-- insert 태그 기본 문법 -->
+ <!-- <insert id="메서드명">실행할 INSERT 구문</insert> -->
+ <!-- 단, 자바의 JDBC PreparedStatement 객체 사용 시 파라미터를 ?로 처리했으나
+ 마이바티에서는 #{파라미터명}으로 데이터를 표시(별도의 치환과정 불필요) --> 
+ 
+ <!-- 학생정보 등록 - INSERT -->
+ <insert id="registStudent">
+ INSERT INTO STUDENT
+ 	  ( IDX
+ 	  , NAME)
+ VALUES (#{idx} -- 단일 객체이므로 student.idx 대신 idx만 지정
+ 	  , #{name}) -- 단일 객체이므로 student.naem 대신 name만 지정
+ </insert>
+ 
+ </mapper>

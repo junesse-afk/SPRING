@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.itwillbs.test3_mybatis2.mapper.ProductMapper">
+
+<insert id="registProduct">
+INSERT INTO PRODUCT (product_id, product_name, product_price, product_qty, product_img)
+VALUE (#{product_id}, #{product_name}, #{product_price}, #{product_qty}, #{product_img})
+
+</insert>
+ 
+<select id="getproductList" resultType="product">
+SELECT * 
+FROM product
+</select>
+
+<select id="getproductInfo" resultType="product">
+SELECT * 
+FROM product
+WHERE product_id = #{product_id}
+</select>
+
+ 
+ <update id="getproductModifyForm" parameterType="product">
+UPDATE PRODUCT
+SET product_id = #{product_id},product_name = #{product_name},product_price = #{product_price},product_qty = #{product_qty},product_img = #{product_img}
+WHERE product_id = #{product_id}
+ 
+ </update>
+ 
+ <delete id="getproductdelete">
+ DELETE FROM PRODUCT
+ WHERE product_id=#{product_id}
+ </delete>
+ 
+ </mapper>

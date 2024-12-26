@@ -1,0 +1,238 @@
+@charset "UTF-8";
+
+main {
+	text-align: center;
+}
+/* 이미지 중앙정렬 안됨 */
+h1 {
+
+
+}
+body{
+	margin: 0;
+
+}
+
+.img {
+	width: 150px;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+li {
+	margin: 0px;
+	padding: 0px;
+}
+
+fieldset {
+	border: 0;
+}
+
+legend {
+	display: none;
+}
+.id {
+	width: 250px; height: 40px;
+}
+.id placeholder {
+	 font-size: 10px;
+}
+
+.pw {
+	margin-top: 5px;
+	width: 250px; height: 40px;
+}
+
+.login {
+	margin-top: 5px;
+	width: 260px; height: 50px;
+	background-color: skyblue;
+	color: white;
+}
+
+#sign {
+	margin-top: 5px;
+	width: 260px; height: 50px;
+	background-color: white;
+	color: black;
+}
+
+.ft{
+	text-align: center;
+	font-size: 10px;
+	color: gray;
+}
+
+.opt { 
+		display: inline-block;
+		line-height: 40px;
+}
+.opt1 {
+		border: none;
+		height: 80px;
+		width: 100px;
+		margin-bottom: 10px;
+		background-color: #cbcdd1;
+		color: red;
+		
+}
+
+.opt2 {
+		border: none;
+		height: 80px;
+		width: 100px;
+		margin-bottom: 10px;
+		background-color: #cbcdd1;
+		color: red;
+		
+}
+
+.opt3 {
+		border: none;
+		height: 80px;
+		width: 100px;
+		margin-bottom: 10px;
+		background-color: #cbcdd1;
+		color: red;
+		
+}
+
+.opt4 {
+		border: none;
+		height: 80px;
+		width: 100px;
+		margin-bottom: 10px;
+		background-color: #cbcdd1;
+		color: red;
+		
+}
+
+.opt5 { 
+		border: none;
+		height: 80px;
+		width: 100px;
+		margin-bottom: 10px;
+		background-color: #cbcdd1;
+		color: red;
+		
+}
+
+.opt6 {
+		border: none;
+		height: 80px;
+		width: 100px;
+		margin-bottom: 10px;
+		background-color: #cbcdd1;
+		color: red;
+}
+
+.show_bg {
+	float:left;
+	position:relative;
+	margin-top: 150px;
+	margin-left: 50px;
+	z-index: 3;
+}
+
+.show_main {
+	background-color: red;
+	width: 1920px;
+	height: 1080px;
+	margin:0 auto;
+	position:absolute;
+	z-index: 1;
+	
+}
+
+.show_main2 {
+	background-color: #cbcdd1;
+	width: 1300px;
+	height: 1080px;
+	float: left;
+	position: relative;
+	margin-left: 10px;
+	z-index: 2;
+}
+
+
+.show_pay {
+	background-color: yellow;
+	width: 443px;
+	height: 1080px;
+	float: right;
+	overflow: hidden;
+	position:relative;
+	z-index: 4;
+	
+}
+
+.show_mian2 {
+	
+}
+
+.show_product {
+	margin-left: 50px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+.show_pd1 {
+	margin-top: 100px;
+	margin-left: 100px;
+}
+
+.show_pd1_ {
+	border: 1px solid black;
+	width: 250px;
+	height: 200px;
+	text-align: center;
+}
+
+.show_pd2_ {
+	border: 1px solid black;
+	width: 250px;
+	height: 30px;
+	text-align: center;
+	
+}
+
+.show_pd3_ {
+	border: 1px solid black;
+	width: 250px;
+	height: 30px;
+	text-align: center;
+	
+}
+
+.show_pd2 {
+	margin-top: 10px;
+	margin-left: 100px;
+}
+
+.show_pd4_ {
+	border: 1px solid black;
+	width: 250px;
+	height: 200px;
+	text-align: center;
+}
+
+.show_pd5_ {
+	border: 1px solid black;
+	width: 250px;
+	height: 30px;
+	text-align: center;
+	
+}
+
+.show_pd6_ {
+	border: 1px solid black;
+	width: 250px;
+	height: 30px;
+	text-align: center;
+	
+}

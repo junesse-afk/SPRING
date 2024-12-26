@@ -5,5 +5,13 @@
 
 <configuration>
 
+<!-- 
+<typeAlias type="실제 클래스타입(패키지명 포함)" alias="별칭"/>
+
+ -->
+
+<typeAliases>
+	<typeAlias type="com.itwillbs.test3_mybatis.vo.StudentVO" alias="student"/>
+</typeAliases>
 
 </configuration>
