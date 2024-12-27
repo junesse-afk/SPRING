@@ -10,7 +10,14 @@
 <body>
 	<div align="center">
 		<h1>상품 목록</h1>
-		<table>
+		<form action="productList" method="get">
+			<input type="text" id="product_id" placeholder="상품번호">
+			<input type="text" id="product_name" placeholder="상품명">
+			<input type="submit" value="조회">
+			
+		</form>
+		<br>
+		<table border="1">
 			<tr>
 				<th>상품번호</th>
 				<th>상품명</th>
@@ -20,11 +27,11 @@
 			</tr>
 			<c:forEach var="product" items="${productList }">
 			<tr>
-			<td>${product.product_id }</td>
-			<td>${product.product_name }</td>
-			<td>${product.product_price }</td>
-			<td>${product.product_qty }</td>
-			<td><button onclick="location.href='productInfo?product_id=${product.product_id }'">상세정보</button></td>
+				<td>${product.product_id }</td>
+				<td>${product.product_name }</td>
+				<td>${product.product_price }</td>
+				<td>${product.product_qty }</td>
+				<td><button onclick="location.href='productInfo?product_id=${product.product_id }'">상세정보</button></td>
 			</tr>
 			</c:forEach>
 			<%-- foreach --%>

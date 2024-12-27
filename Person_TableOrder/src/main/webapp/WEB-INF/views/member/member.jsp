@@ -21,7 +21,7 @@
 			<li><input type="text" id="tadd" placeholder="주소1"></li>
 			<li><input type="text" id="tadd" placeholder="주소2"></li>
 			<li><input type="date" id="tdate"></li>
-			<li><input type="text" placeholder="사업자등록증"></li>
+			<li><input type="file" placeholder="사업자등록증"></li>
 			<li><button type="submit" id="join">회원가입</button></li>
 			<li><button type="button" onclick="history.back()">돌아가기</button><li>
 		</ul>

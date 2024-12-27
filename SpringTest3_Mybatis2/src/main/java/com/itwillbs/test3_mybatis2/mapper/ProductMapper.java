@@ -10,7 +10,7 @@ import com.itwillbs.test3_mybatis2.vo.ProductVO;
 public interface ProductMapper {
 	
 	//상품 정보 등록
-	int registProduct (ProductVO product);
+	public int registProduct (ProductVO product);
 	
 	//상품 목록 조회
 	List<ProductVO> getproductList();
@@ -19,9 +19,9 @@ public interface ProductMapper {
 	ProductVO getproductInfo(Integer product_id);
 	
 	
-	int getproductModifyForm(ProductVO product);
+	public int getproductModifyForm(ProductVO product);
 	
 	ProductVO getproductdelete(ProductVO product);
 
-	int getproductdelete(Integer product_id);
+	public int getproductdelete(Integer product_id);
 }

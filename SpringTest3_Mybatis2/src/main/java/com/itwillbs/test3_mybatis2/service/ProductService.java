@@ -15,8 +15,7 @@ import com.itwillbs.test3_mybatis2.vo.ProductVO;
 		@Autowired
 		ProductMapper mapper;
 		
-		public int registProduct(ProductVO product) {
-				
+		public int registProduct(ProductVO product) {				
 			return mapper.registProduct(product);		
 
 		}
@@ -28,7 +27,6 @@ import com.itwillbs.test3_mybatis2.vo.ProductVO;
 		public List<ProductVO> getproductList() {
 			return mapper.getproductList();
 		}
-		
 		
 		
 		public int getproductModifyForm(ProductVO product) {

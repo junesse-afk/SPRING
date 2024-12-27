@@ -24,7 +24,7 @@ ProductService service;
 
 	@PostMapping("registProduct")
 	public String registProduct(ProductVO product) {
-		int registCount = service.registProduct(product);
+		service.registProduct(product);
 		return "redirect:/productList";
 	}
 
@@ -53,15 +53,16 @@ ProductService service;
 	
 	@PostMapping("productModify")
 	public String productModifyForm(ProductVO product, Model model) {
-		int modify = service.getproductModifyForm(product);
+		service.getproductModifyForm(product);
 		model.addAttribute("product_id", product.getProduct_id());
 		return "redirect:/productInfo";
 	}
 	
 	@GetMapping("productDelete")
-	public String productdelete(Integer product_id, Model model) {
-		int product2 = service.getproductdelete(product_id);
-		model.addAttribute("product", product2);
+	public String productdelete(Integer product_id) {
+		//int product2 = /*Model model*/
+				service.getproductdelete(product_id);
+		//model.addAttribute("product", product2);
 		return "redirect:/productList";
 		
 	}

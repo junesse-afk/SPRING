@@ -8,7 +8,6 @@
 <insert id="registProduct">
 INSERT INTO PRODUCT (product_id, product_name, product_price, product_qty, product_img)
 VALUE (#{product_id}, #{product_name}, #{product_price}, #{product_qty}, #{product_img})
-
 </insert>
  
 <select id="getproductList" resultType="product">
@@ -25,9 +24,8 @@ WHERE product_id = #{product_id}
  
  <update id="getproductModifyForm" parameterType="product">
 UPDATE PRODUCT
-SET product_id = #{product_id},product_name = #{product_name},product_price = #{product_price},product_qty = #{product_qty},product_img = #{product_img}
-WHERE product_id = #{product_id}
- 
+SET product_name = #{product_name},product_price = #{product_price},product_qty = #{product_qty},product_img = #{product_img}
+WHERE product_id = #{product_id} 
  </update>
  
  <delete id="getproductdelete">

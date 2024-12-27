@@ -10,11 +10,22 @@
 	<div align="center">
 		<h1>상품 상세 정보</h1>
 		<h3>
-			상품번호:${product.product_id } <br>
-			상품명:${product.product_name }  <br>
-			가격:${product.product_price }  <br>
-			수량:${product.product_qty }  <br>
-			파일명: ${product.product_img } <br>
+		<table border="1">
+		<tr>
+			<th>상품번호</th>
+			<th>상품명</th>
+			<th>가격</th>
+			<th>수량</th>
+			<th>파일명</th>
+		</tr>
+		<tr>
+			<td>${product.product_id }</td>
+			<td>${product.product_name }</td>
+			<td>${product.product_price }</td>
+			<td>${product.product_qty }</td>
+			<td>${product.product_img }</td>
+		</tr>
+		</table>
 			<input type="button" value="홈으로" onclick="location.href='./'">
 			<input type="button" value="상품목록조회" onclick="location.href='productList'">
 			<input type="button" value="상품삭제" onclick="confirmDelete(${product.product_id})">
