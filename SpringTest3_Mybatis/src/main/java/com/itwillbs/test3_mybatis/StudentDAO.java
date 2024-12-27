@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.itwillbs.test3_mybatis.JdbcUtil;
-
 public class StudentDAO {
 
 	// insert

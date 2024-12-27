@@ -17,6 +17,7 @@
 			<input type="text" name="product_qty" placeholder="수량"><br>
 			<input type="file" name="product_img"><br>
 			<input type="submit" value="등록">
+			<%-- 상품정보 등록 완료 후 "상품목록" productList로 이동 --%>
 		</form>
 	</div>
 </body>

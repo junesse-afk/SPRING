@@ -1,9 +1,8 @@
 package com.itwillbs.test3_mybatis;
 
-//STUDENT 테이블에 대응하는 STUDENTDTO 클래스 정의
-
+// STUDENT 테이블에 대응하는 StudentDTO 클래스 정의
 public class StudentDTO {
-	// 멤버변수 선언(=컬럼명)
+	// 멤버변수 선언 (= 컬럼명)
 	private int idx;
 	private String name;
 	
@@ -24,6 +23,9 @@ public class StudentDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	@Override
+	public String toString() {
+		return "StudentDTO [idx=" + idx + ", name=" + name + "]";
+	}
 	
 }
