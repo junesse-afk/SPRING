@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mvc_board.mapper.MemberMapper">
+
+	<insert id="registMember" parameterType="member">
+		INSERT INTO MEMBER
+		VALUES (null
+			 , #{name}
+			 , #{id}
+		     , #{passwd}
+		     , #{post_code}
+		     , #{address1}
+		     , #{address2}
+		     , #{email}
+		     , #{job}
+		     , #{gender}
+		     , #{hobby}
+		     , #{motivation}
+		     , NOW()
+			 , null
+		     , 1
+		     , 'N')
+	</insert>
+
+</mapper> 

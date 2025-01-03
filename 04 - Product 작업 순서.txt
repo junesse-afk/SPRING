@@ -1,0 +1,20 @@
+main.jsp
+- 상품정보등록 버튼 클릭 시 상품정보등록(product_regist_form.jsp)로 이동
+- 번호 입력 후 상품정보조회 버튼 클릭 시 해당 상품 정보 select 후 상품상세정보(product_info.jsp)로 이동
+- 상품목록조회 버튼 클릭 시 모든 상품 정보 select 후 상품목록(product_list.jsp)로 이동
+
+product_regist_form.jsp
+- 상품정보 입력 후 등록 버튼 클릭 시 DB에 insert후 상품목록(product_list.jsp)로 이동
+
+product_list.jsp
+- 모든 상품정보를 보여주는 화면이며 마지막 열(th, td)부분에 상세정보 버튼 생성
+- 상세정보 버튼 클릭 시 상품상세정보(product_info.jsp)로 이동
+
+product_info.jsp
+- 상품 1건에 대한 상세 정보를 보여주는 화면
+- 상품삭제 버튼 클릭 시 해당상품 삭제 후 상품목록(product_list.jsp)로 이동
+- 상품수정 버튼 클릭 시 상품수정(product_modify_form.jsp)으로 이동
+
+product_modify.jsp
+- 최초 상품 수정 화면에서 기존 상품 정보를 보여줌
+- 수정 후 등록 버튼 클릭 시 DB에 update후 상품상세(product_info.jsp)로 이동

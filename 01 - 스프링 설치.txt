@@ -1,0 +1,48 @@
+< STS 설치 순서 >
+1. sts 압축 파일을 C드라이브 아래에 압축 해제 (한글 경로 포함 X)
+2. ini 파일 수정
+최상단 아래와 같이 추가
+-vm
+C:\Program Files\ojdkbuild\java-11-openjdk-11.0.15-1\bin\javaw.exe
+(설치된 JDK경로 + javaw.exe)
+
+3. 바로가기 생성 후 바탕화면으로 옮기기
+4. STS 실행 File > New > Spring Legacy Project > Spring MVC project 안보임!!
+(워크스페이스\.metadata\.plugins\org.springsource.ide.eclipse.commons.content.core 에 http-content.xml 파일 붙여놓고 STS 재시작)
+
+< STS 환경 설정 >
+- Window - Preferences - General - Workspace 하단 UTF-8 변경
+- Window - Preferences - Web 아래에 CSS/HTML UTF-8로 변경 후 Apply
+
+< Tomcat 추가 > 
+9.0버전 사용
+Window - Preferences - Server - Runtime XXX -> Add
+
+< JS 흑백 해결 >
+Help -> Install New Software
+Contact all update xxx 체크해제
+https://download.eclipse.org/releases/2021-09/
+최하단 확장 > Javascript Development Tools 선택 후 next
+Progress창에서 install이 모두 완료되면 STS 재시작
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

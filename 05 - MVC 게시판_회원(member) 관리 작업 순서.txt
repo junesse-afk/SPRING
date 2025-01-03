@@ -1,0 +1,62 @@
+[ 회원(member) 관리 작업 구조 ]
+MemberController - MemberService - MemberMapper(XML)
+===================================================================
+
+[ 회원가입 처리 과정 ]
+1. 회원가입 링크 클릭하여 "MemberJoin" 서블릿 주소 요청(GET)
+2. 서블릿 요청을 MemberController 클래스의 memberJoinForm() 메서드에서 GET 방식으로 매핑
+3. member/member_join_form.jsp 페이지로 포워딩(디스패치)
+-------------------------
+4. 뷰페이지에서 회원가입 정보 입력 후 [가입] 버튼 클릭 시 "MemberJoin" 서블릿 주소 요청(POST)
+5. MemberController 클래스의 memberJoin() 메서드에서 POST 방식으로 매핑
+6. 폼 파라미터 데이터를 MemberVO 타입 파라미터로 전달받음
+7. 폼 파라미터 중 패스워드(passwd) 항목을 BCryptPasswordEncoder 객체를 활용하여 단방향 암호화 수행
+8. MemberService - registMember() 메서드 호출하여 회원 가입 요청(파라미터 : MemberVO 리턴타입 : int)
+9. registMember() 메서드에서 MemberMapper - insertMember() 메서드 호출
+10. insertMember() 메서드와 매핑되는 MemberMapper XML 의 <insert> 태그 기술
+    => INSERT 작업 후 결과값이 int 타입으로 리턴됨
+    => MemberMapper -> MemberService -> MemberController
+11. MemberController 에서 리턴받은 int 값을 판별하여
+    성공 시 "MemberJoinSuccess" 서블릿 주소로 리다이렉트하고
+    실패 시 Model 객체에 "msg" 속성값으로 "회원가입 실패!" 저장하고 "result/fail.jsp" 페이지 포워딩
+=====================================================================================================
+
+[ 회원 로그인 처리 과정 ]
+1. 로그인 링크 클릭하여 "MemberLogin" 서블릿 요청(GET)
+2. MemberController - loginForm() 메서드를 통해 GET 방식 매핑하여 member_login_form.jsp 페이지 포워딩
+--------------------
+3. 뷰페이지에서 아이디, 패스워드 입력받아 로그인 버튼 클릭 시 "MemberLogin" 서블릿 요청(POST)
+4. MemberController - login() 메서드를 통해 POST 방식 매핑
+   (아이디, 패스워드 파라미터를 MemberVO 타입으로 전달)
+5. MemberService - getMember() 메서드 호출하여 회원 상세정보 조회 요청
+   => 파라미터 : 아이디   리턴타입 : MemberVO(dbMember)
+6. 리턴받은 MemberVO 객체(dbMember)의 패스워드와 입력받은 아이디를 비교
+   => BCryptPasswordEncoder - matches() 메서드를 통해 두 패스워드 비교
+   => 다를 경우 "로그인 실패!" 처리를 위해 fail.jsp 포워딩
+   => 같을 경우 HttpSession 객체에 "sId" 속성값으로 아이디 저장 후 메인페이지로 리다이렉트
+=====================================================================================================
+[ 회원 로그아웃 처리 과정 ]
+1. 로그인 상태에서 로그아웃 링크 클릭하여 "MemberLogout" 서블릿 요청(GET)
+2. MemberController - logout() 메서드를 통해 GET 방식 매핑
+3. HttpSession 객체 자동 주입받아 invalidate() 메서드 호출하여 세션 초기화
+4. 메인페이지로 리다이렉트
+=====================================================================================================
+[ 회원 상세정보 조회 처리 과정 ]
+1. 로그인 된 상태에서 자신의 아이디 클릭 시 "MemberInfo" 서블릿 요청(GET)
+2. MemberController - memberInfo() 메서드를 통해 GET 방식 매핑
+3. HttpSession 객체의 "sId" 속성값을 가져와서 세션 아이디 존재 여부 판별
+   => 세션 아이디가 없을 경우 "로그인 필수!" 처리를 위해 fail.jsp 페이지 포워딩
+   => 이 때, targetURL 속성값으로 "MemberLogin" 전달
+4. MemberService - getMember() 메서드 호출하여 회원 상세정보 조회 요청
+   => 파라미터 : 아이디   리턴타입 : MemberVO
+5. MemberMapper - selectMember() 메서드 호출 => Mapper XML 의 <select> 태그 작성
+   => SELECT * FROM member WHERE id = '전달받은 아이디'
+   => 조회 결과를 resultType="MemberVO 타입" 으로 리턴
+6. MemberController 에서 리턴받은 조회 결과를 Model 객체에 "model" 속성명으로 저장 후
+   member/member_info.jsp 페이지로 포워딩
+=====================================================================================================
+
+
+
+
+
