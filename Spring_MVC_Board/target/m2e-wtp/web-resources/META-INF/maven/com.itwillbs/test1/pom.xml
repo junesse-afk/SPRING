@@ -88,7 +88,16 @@
 		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
 		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
 		    <version>1.16</version>
-		</dependency>				
+		</dependency>
+		
+		<!-- 7. ajax 활용 시 json 변환을 편리하게 할 jackson 라이브러리 추가 -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    		<version>2.17.2</version>
+		</dependency>
+						
 	
 		<!-- Spring -->
 		<dependency>

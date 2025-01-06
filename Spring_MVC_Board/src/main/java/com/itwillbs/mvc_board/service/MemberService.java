@@ -1,5 +1,7 @@
 package com.itwillbs.mvc_board.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,9 @@ public class MemberService {
 	
 	public int registMember(MemberVO member) {
 		return mapper.registMember(member);
+	}
+	
+	public int checkId(Map<String, String> param) {
+		return mapper.checkId(param);
 	}
 }

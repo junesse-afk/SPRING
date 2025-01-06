@@ -23,5 +23,11 @@
 		     , 1
 		     , 'N')
 	</insert>
+	
+	<select id="checkId" parameterType="map">
+		SELECT COUNT(*) AS CNT
+		  FROM MEMBER
+		 WHERE ID = #{id} 
+	</select>
 
 </mapper> 
