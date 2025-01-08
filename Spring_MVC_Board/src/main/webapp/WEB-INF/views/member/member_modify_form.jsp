@@ -1,70 +1,71 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath }/resources/css/default.css" rel="stylesheet" type="text/css">
-<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.1.js"></script>
-<script src="${pageContext.request.contextPath }/resources/js/member_join_form.js"></script>
 </head>
 <body>
-
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp" />
 	</header>
 
 	<article>
-		<h1>회원 가입</h1>
-		<form action="MemberJoin" name="joinForm" method="post">
+		<h1>회원 정보 수정</h1>
+		<form action="MemberModify" name="joinForm" method="post">
 			<table border="1">
 				<tr>
 					<th>이름</th>
-					<td><input type="text" name="name" id="name" pattern="^[가-힣]{2,6}$" title="한글 2~6글자"></td>
+					<td><input type="text" name="name" id="name" value="${member.name }" pattern="^[가-힣]{2,6}$" title="한글 2~6글자"></td>
 				</tr>
 				<tr>
 					<th>아이디</th>
 					<td>
-						<input type="text" name="id" id="id" placeholder="4~16자 영문자,숫자,_ 조합">
+						<input type="text" name="id" id="id" value="${member.id }" placeholder="4~16자 영문자,숫자,_ 조합">
 						<span id="checkIdResult"></span>
 					</td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
 					<td>
-						<!-- 
-						비밀번호 입력란 change 이벤트 핸들링
-						=> 비밀번호가 영문자, 숫자, 특수문자(!@#$%) 조합 8글자 ~ 16글자 사이
-						=> 조합 대상 외의 문자가 포함되거나 길이가 부적합할 경우
-							"영문자, 숫자, 특수문자(!@#$%) 조합 8 ~ 16글자 필수!" 메세지를 span영역에 출력
-						=> 아니면 복잡도 검사를 체크하여 "안전", "보통", "위험", "사용불가" 4단계 메세지 출력	
-						 -->
-						<input type="password" name="passwd" id="passwd" placeholder="8 ~ 16글자 사이 입력">
+						<input type="password" name="passwd" id="passwd" value="${member.passwd }"placeholder="8 ~ 16글자 사이 입력">
 						<span id="checkPasswdResult"></span>
 					</td>
 				</tr>
 				<tr>
 					<th>비밀번호확인</th>
 					<td>
-						<input type="password" name="passwd2" id="passwd2">
+						<input type="password" name="passwd2" id="passwd2" value="value=${member.id }">
 						<span id="checkPasswd2Result"></span>
 					</td>
 				</tr>
 				<tr>
 					<th>주소</th>
 					<td>
-						<input type="text" name="post_code" id="post_code" size="6">
+						<input type="text" name="post_code" id="post_code" value="${member.post_code }" size="6">
 						<input type="button" value="주소검색" id="btnSearchAddress"><br>
-						<input type="text" name="address1" id="address1" size="30" placeholder="기본주소"><br>
-						<input type="text" name="address2" id="address2" size="30" placeholder="상세주소">
+						<input type="text" name="address1" id="address1" value="${member.address1 }" size="30" placeholder="기본주소"><br>
+						<input type="text" name="address2" id="address2" value="${member.address2 }" size="30" placeholder="상세주소">
 					</td>
 				</tr>
 				<tr>
 					<th>E-Mail</th>
 					<td>
-						<input type="text" id="email1" name="email1" size="10"> @
-						<input type="text" id="email2" name="email2" size="10">
+					<%--
+					이메일 주소(email) 분리(기준문자열: @) 후 각각의 텍스트 박스에 표시
+					JSTL - function 라이브러리의 split() 함수 필요
+					1) 이메일 주소를 분리하여 별도의 변수에 저장
+					2) 분리된 각 배열의 문자열을 각각 텍스트 박스에 출력
+					 --%>
+					 <c:set var="arrEmail" value="${fn:split(member.email, '@')}"></c:set>
+					 
+					
+						<input type="text" id="email1" name="email1" value="${arrEmail[0] }"size="10"> @
+						<input type="text" id="email2" name="email2" value="${arrEmail[1] }"size="10">
 						<select name="emailDomain">
 							<option value="">직접입력</option>
 							<option value="naver.com">naver.com</option>
@@ -76,39 +77,40 @@
 				<tr>
 					<th>직업</th>
 					<td>
+					<%-- ${member.job } 데이터확인 --%>
 						<select name="job">
 							<option value="">항목을 선택하세요</option>
-							<option value="개발자">개발자</option>
-							<option value="DB엔지니어">DB엔지니어</option>
-							<option value="관리자">관리자</option>
+							<option value="개발자"<c:if test="${member.job eq '개발자' }">selected</c:if>>개발자</option>
+							<option value="DB엔지니어"<c:if test="${member.job eq 'DB엔지니어' }">selected</c:if>>DB엔지니어</option>
+							<option value="관리자"<c:if test="${member.job eq '관리자' }">selected</c:if>>관리자</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th>성별</th>
 					<td>
-						<input type="radio" name="gender" value="M">남
-						<input type="radio" name="gender" value="F">여
+						<input type="radio" name="gender" value="M" <c:if test="${member.gender eq 'M' }">checked</c:if>>남
+						<input type="radio" name="gender" value="F" <c:if test="${member.gender eq 'F' }">checked</c:if>>여
 					</td>
 				</tr>
 				<tr>
 					<th>취미</th>
 					<td>
-						<input type="checkbox" name="hobby" value="여행">여행
-						<input type="checkbox" name="hobby" value="독서">독서
-						<input type="checkbox" name="hobby" value="게임">게임
+						<input type="checkbox" name="hobby" value="여행" <c:if test="${fn:contains(member.hobby, '여행')}">checked</c:if>> 여행
+						<input type="checkbox" name="hobby" value="독서" <c:if test="${fn:contains(member.hobby, '독서')}">checked</c:if> >독서
+						<input type="checkbox" name="hobby" value="게임" <c:if test="${fn:contains(member.hobby, '게임')}">checked</c:if> >게임
 						<input type="checkbox" id="checkAllHobby">전체선택
 					</td>
 				</tr>
 				<tr>
 					<th>가입동기</th>
 					<td>
-						<textarea rows="5" cols="40" name="motivation"></textarea>
+						<textarea rows="5" cols="40" name="motivation">${member.motivation }</textarea>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
-						<input type="submit" value="가입">
+						<input type="submit" value="정보수정">
 						<input type="reset" value="초기화">
 						<input type="button" value="돌아가기" onclick="histoty.back()">
 					</td>
