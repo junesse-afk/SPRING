@@ -36,13 +36,38 @@
 		 WHERE ID = #{id}
 		   AND PASSWD = #{passwd}
 	</select>
-
-	<select id="getMemberInfo">
-	SELECT *
-	FROM MEMBER
-	WHERE ID = #{id}
 	
+	<select id="getMemberInfo">
+		SELECT *
+		  FROM MEMBER
+		 WHERE ID = #{id} 
 	</select>
+	
+	<update id="modifyMember" parameterType="map">
+		UPDATE MEMBER
+	       SET NAME = #{name}
+		<if test="!passwd.equals('')">
+			 , PASSWD = #{passwd} -- 비밀번호 변경시에만		
+		</if>  
+	         , POST_CODE = #{post_code}
+	         , ADDRESS1 = #{address1}
+	         , ADDRESS2 = #{address2}
+	         , EMAIL = CONCAT(#{email1}, '@', #{email2})
+	         , JOB = #{job}
+		     , GENDER = #{gender}
+	         , HOBBY = #{hobby}
+	         , MOTIVATION = #{motivation}
+	   	 WHERE ID = #{id}
+	</update>
+	
+	<update id="updateStatus" parameterType="map">
+		UPDATE MEMBER
+		   SET WITHDRAW_DATE = NOW()
+			 , MEMBER_STATUS = 3
+		 WHERE ID = #{id}	 
+	</update>
+
+
 
 
 

@@ -87,6 +87,7 @@ $(function(){
 			type: "GET",
 			url: "checkId",
 			data: {id : $('#id').val()},
+			async: false,
 			success: function(res){
 				$('#checkIdResult').text(res.msg);
 				$('#checkIdResult').css('color', res.color);
@@ -95,6 +96,7 @@ $(function(){
 			}
 		})
 	}
+	alert();
 	// ----------------------------
 	
 	function checkPass() {

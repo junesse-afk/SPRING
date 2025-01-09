@@ -13,11 +13,9 @@
 	</header>
 	
 	<article>
-		<h1>로그인</h1>
-		<form action="MemberLogin" method="post" id="loginForm">
-			<input type="text" name="id" placeholder="아이디"><br>
-			<input type="password" name="passwd" placeholder="패스워드"><br>
-			<input type="checkbox" name="rememberId">아이디 기억하기<br>
+		<h1>회원 탈퇴</h1>
+		<form action="MemberWithdraw" method="post" id="loginForm">
+			<input type="password" name="passwd" placeholder="패스워드" required><br>
 			<input type="submit" value="로그인">
 		</form>
 	</article>

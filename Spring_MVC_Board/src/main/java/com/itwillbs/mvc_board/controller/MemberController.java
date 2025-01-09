@@ -82,23 +82,103 @@ public class MemberController {
 	// 회원 상세정보 조회
 	@GetMapping("MemberInfo")
 	public String memberInfo(HttpSession session, Model model) {
-		//세션 아이디 가져와서 로그인 여부 발생
-		//만약, 미 로그인(세션객체sId 속성값이 null)일 경우
-		//"접근 권한이 없습니다!" 메세지를 msg 속성에 저장 후 fail.jsp 포워딩
-		
+		// 세션 아이디 가져와서 로그인 여부 판별
+		// => 만약, 미 로그인(세션 객체의 sId 속성값이 null)일 경우
+		//    "접근 권한이 없습니다!" 메시지를 msg 속성에 저장 후 fail.jsp 포워딩
 		String id = (String)session.getAttribute("sId");
+		System.out.println(id);
 		
 		if (id == null) {
 			model.addAttribute("msg", "접근 권한이 없습니다!");
 			model.addAttribute("url", "MemberLogin");
 			return "result/fail";
 		}
-		//[로그인 상태일 경우]
+		
+		// [ 로그인 상태일 경우 ]
 		MemberVO member = memberService.getMemberInfo(id);
 		model.addAttribute("member", member);
 		
 		return "member/member_modify_form";
 	}
+	
+	@PostMapping("MemberModify")
+//	public String memberModify(MemberVO member, String oldPasswd) {
+	public String memberModify(
+			@RequestParam Map<String, String> map, 
+			String hobby,
+			HttpSession session,
+			Model model) {
+		
+		System.out.println("!@#!@#");
+		map.put("hobby", hobby); // 기존 hobby 덮어씌우기
+		System.out.println(map);
+		
+		String id = (String)session.getAttribute("sId");
+		if (id == null) {
+			model.addAttribute("msg", "접근 권한이 없습니다!");
+			model.addAttribute("url", "MemberLogin");
+			return "result/fail";
+		}
+		
+		MemberVO dbMember = memberService.getMemberInfo(id);
+		// 화면에서 입력한 비밀번호(기존 비밀번호)와 DB비밀번호가 일치하면 수정!
+		if (!dbMember.getPasswd().equals(map.get("oldPasswd"))) {
+			model.addAttribute("msg", "수정 권한이 없습니다.");
+			return "result/fail";
+		}
+		// ------------------------------------------------------------
+		int updateCnt = memberService.modifyMember(map);
+		
+		if (updateCnt > 0) {
+			return "redirect:/MemberInfo";
+		} else {
+			model.addAttribute("msg", "회원정보 수정 실패!");
+			return "result/fail";
+		}
+	}
+	
+	@GetMapping("MemberWithdraw")
+	public String memberWithdraw(HttpSession session, Model model) {
+		String id = (String)session.getAttribute("sId");
+		if(id == null) {
+			model.addAttribute("msg", "로그인 필수!");
+			model.addAttribute("url", "MemberLogin");
+			return "result/fail";
+		}
+		return "member/member_withdraw_form";
+	}
+	
+	@PostMapping("MemberWithdraw")
+	public String memberWithdraw(
+			@RequestParam Map<String, String> map, 
+			HttpSession session, 
+			Model model) {
+		
+		String id = (String)session.getAttribute("sId");
+		
+		MemberVO dbMember = memberService.getMemberInfo(id);
+		// 화면에서 입력한 비밀번호(기존 비밀번호)와 DB비밀번호가 일치하면 수정!
+		if (!dbMember.getPasswd().equals(map.get("passwd"))) {
+			model.addAttribute("msg", "비밀번호가 틀립니다.");
+			return "result/fail";
+		}
+		// 비밀번호 일치 시 map에 session에 id 추가
+		map.put("id", id);
+		
+		int updateCnt = memberService.updateStatus(map);
+		
+		if(updateCnt > 0) {
+			session.invalidate(); // session 초기화
+			model.addAttribute("msg", "탈퇴 성공");
+			model.addAttribute("url", "./"); // main 페이지로 이동
+		} else {
+			model.addAttribute("msg", "탈퇴 실패!");
+		}
+		return "result/fail";
+		
+		
+	}
+	
 	
 	@ResponseBody // 리턴되는 문자열이 데이터가 되도록 변경
 	@GetMapping("checkId")

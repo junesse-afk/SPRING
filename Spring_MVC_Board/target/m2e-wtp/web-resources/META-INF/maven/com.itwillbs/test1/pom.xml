@@ -185,13 +185,22 @@
 			<scope>provided</scope>
 		</dependency> -->
 		
-		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
-		    <groupId>jakarta.servlet</groupId>
-		    <artifactId>jakarta.servlet-api</artifactId>
-		    <version>6.0.0</version>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>4.0.1</version>
 		    <scope>provided</scope>
 		</dependency>
+				
+		
+		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>jakarta.servlet</groupId> -->
+<!-- 		    <artifactId>jakarta.servlet-api</artifactId> -->
+<!-- 		    <version>6.0.0</version> -->
+<!-- 		    <scope>provided</scope> -->
+<!-- 		</dependency> -->
 		
 		
 		
@@ -231,6 +240,7 @@
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

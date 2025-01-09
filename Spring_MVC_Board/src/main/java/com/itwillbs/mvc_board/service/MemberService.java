@@ -25,10 +25,19 @@ public class MemberService {
 	public MemberVO getMember(MemberVO member) {
 		return mapper.getMember(member);
 	}
-
+	
 	public MemberVO getMemberInfo(String id) {
 		return mapper.getMemberInfo(id);
 	}
+	
+	public int modifyMember(Map<String, String> map) {
+		return mapper.modifyMember(map);
+	}
+	
+	public int updateStatus(Map<String, String> map) {
+		return mapper.updateStatus(map);
+	}
+	
 	
 	
 	
