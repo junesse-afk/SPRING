@@ -9,6 +9,7 @@
 	 -->
 	<typeAliases>
 		<typeAlias type="com.itwillbs.mvc_board.vo.MemberVO" alias="member"/>
+		<typeAlias type="com.itwillbs.mvc_board.vo.BoardVO" alias="board"/>
 	</typeAliases>
 
 </configuration>

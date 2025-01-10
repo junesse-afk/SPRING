@@ -15,6 +15,8 @@
 
 	<article>
 		<h1>MVC 게시판</h1>
+		<h3><a href="BoardWrite">글쓰기</a></h3>
+		<h3><a href="BoardList">글목록</a></h3>
 	</article>
 	
 	<footer>

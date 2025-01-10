@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mvc_board.mapper.BoardMapper">
+
+	<insert id="registBoard" parameterType="board">
+	
+	<selectKey keyProperty="board_num" resultType="int" order="BEFORE">
+	SELECT IFNULL(MAX(BOARD_NUM), 0) + 1
+	FROM BOARD
+	</selectKey>
+	INSERT INTO board
+	value  (#{board_num}
+		,  #{board_name}
+		,  #{board_subject}
+		,  #{board_content}
+		,  #{board_file}
+		,  #{board_file1}
+		,  #{board_file2}
+		,  #{board_file3}
+		,  #{board_num} -- 글번호 board_num과 같아야함
+		,  0            -- 들여쓰기레벨(board_re_lev)
+		,  0            -- 답글순서번호(board_re_seq)
+		,  0            -- 조회수(board_readcount)
+		,  now()
+		,  #{board_writer_ip})
+	</insert>
+	<select id="getBoardList" resultType="board">
+	-- getBoardList
+	SELECT *
+	  FROM BOARD
+	</select>
+</mapper> 
