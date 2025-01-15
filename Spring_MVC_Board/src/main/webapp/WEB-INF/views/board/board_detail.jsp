@@ -72,24 +72,27 @@
 	</header>
 	<!-- 게시판 등록 -->
 	<article id="articleForm">
+	
+<%-- 		<h3>${board }</h3> --%>
+	
 		<h1>글 상세내용 보기</h1>
 		<section id="basicInfoArea">
 			<table>
 				<tr>
 					<th class="td_title">제목</th>
-					<td colspan="3"></td>
+					<td colspan="3">${board.board_subject }</td>
 				</tr>
 				<tr>
 					<th class="td_title">작성자</th>
-					<td></td>
+					<td>${board.board_name }</td>
 					<th class="td_title">작성일시</th>
-					<td></td>
+					<td>${board.board_date }</td>
 				</tr>
 				<tr>
 					<th class="td_title">작성자IP</th>
-					<td></td>
+					<td>${board.board_writer_ip }</td>
 					<th class="td_title">조회수</th>
-					<td></td>
+					<td>${board.board_readcount }</td>
 				</tr>
 				<tr>
 					<th class="td_title">첨부파일</th>
@@ -98,11 +101,11 @@
 			</table>
 		</section>
 		<section id="articleContentArea">
-			
+			${board.board_content }
 		</section>
 		<section id="commandCell">
 			<%-- 목록 버튼 항상 표시 --%>
-			<input type="button" value="목록" onclick="">
+			<input type="button" value="목록" onclick="location.href='BoardList?pageNum=${param.pageNum}'">
 		</section>
 	</article>
 	<footer>

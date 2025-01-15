@@ -31,6 +31,12 @@
 		text-align: center;
 	}
 	
+	/* 제목은 좌측 정렬 및 여백 설정 */
+	#listForm .board_subject {
+		text-align: left;
+		padding-left: 20px;
+	}
+	
 	#pageList {
 		margin: auto;
 		width: 1024px;
@@ -54,6 +60,7 @@
 		text-decoration: none;
 	}
 </style>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 </head>
 <body>
 	<header>
@@ -64,7 +71,7 @@
 		<!-- 게시판 리스트 -->
 		<h1>게시판 글 목록</h1>
 		<section id="commandArea">
-			<input type="button" value="글쓰기" onclick="" />
+			<input type="button" value="글쓰기" onclick="location.href='BoardWrite'" />
 		</section>
 		<section id="listForm">
 			<table>
@@ -109,12 +116,60 @@
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
-				
-				
-				
 			</table>
 		</section>
+		
+		<section id="pageList">
+		
+			<%-- [이전] 버튼 클릭 시 현재 페이지의 이전 페이지 요청(2페이지 일 경우 1페이지 요청) --%>
+			<input type="button" value="이전" onclick="location.href='BoardList?pageNum=${pageInfo.pageNum - 1}'" 
+				<c:if test="${pageInfo.pageNum eq 1}">disabled</c:if> >
+		
+			<%-- 계산괸 페이지 번호가 저장된 PageInfo 객체(pageInfo)를 통해 페이지 번호 반복 출력 --%>
+			<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
+			<%-- 각 페이지번호 마가 하이퍼링크 설정 --%>
+			<%-- 단, 현재 페이지(i값과 pageNum 동일)는 하이퍼링크 없이 굵게 표시 --%>
+				<c:choose>
+					<c:when test="${i eq pageInfo.pageNum }">
+						<strong>${i }</strong>
+					</c:when>
+					<c:otherwise>
+						<a href="BoardList?pageNum=${i }">${i }</a>		
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		
+			<%-- [다음] 버튼 클릭 시 현재 페이지의 다음 페이지 요청 (2페이지일 경우 3페이지 요청) --%>
+			<%-- 현재 목록의 페이지번호 + 1 값을 파라미터로 전달 --%>
+			<%-- 단, 현재 페이지가 최대 페이지 번호와 동일할 경우 비활성화(disabled) --%>
+			<input type="button" value="다음" onclick="location.href='BoardList?pageNum=${pageInfo.pageNum + 1}'" 
+				<c:if test="${pageInfo.pageNum eq pageInfo.maxPage}">disabled</c:if> >
+		</section>
+		
 	</article>
+	
+	<script type="text/javascript">
+	// 게시물 제목열 클릭 이벤트 핸들링
+	$(".board_subject").on("click", function(event){
+		
+		// [클릭된 제목에 해당하는 게시물의 글 번호 가져오기]
+		// 1) 클릭 대상 요소의 부모 탐색하여 해당 부모의 자식들 중
+		//    클래스 선택자가 "board_num"인 요소 탐색
+// 		let parent = $(event.target).parent();
+	
+// 		let board_num = $(parent).find(".board_num").text();
+		
+		// 2) 클릭 대상 요소의 형재 노드 탐색
+		let board_num = $(event.target).siblings(".board_num").text();
+
+		//"BoardDetail" 서블릿 주소 요청
+		// => 파라미터 : 글번호(위에서 탐색한 번호), 페이지 번호(pageInfo 객체의 pageNum 속성값)
+		location.href = "BoardDetail?board_num=" + board_num + "&pageNum=${pageInfo.pageNum}";
+	});
+	
+	</script>
+	
+	
 </body>
 </html>
 

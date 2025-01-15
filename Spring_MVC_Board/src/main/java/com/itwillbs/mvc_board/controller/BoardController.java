@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.mvc_board.service.BoardService;
 import com.itwillbs.mvc_board.vo.BoardVO;
+import com.itwillbs.mvc_board.vo.PageInfo;
 
 @Controller
 public class BoardController {
@@ -68,11 +70,77 @@ public class BoardController {
 	}
 	
 	@GetMapping("BoardList")
-	public String boardList(Model model) {
-		List<BoardVO> boardList = boardService.getBoardList();
+	public String boardList(
+			@RequestParam(defaultValue = "1") int pageNum,
+			Model model) {
+		
+		// ---------------------------------------------------
+		// [ 페이징 처리 ]
+		// 1. 페이징 처리를 위해 조회 목록 갯수 조절에 사용할 변수 선언
+		// int pageNum = 1; // 화면에서 1 클릭했다고 가정
+		int listLimit = 10;	// 한페이지 당 표시할 게시물 수
+		int startRow = (pageNum - 1) * listLimit;
+
+		// 2. 실제 뷰페이지에서 페이징 처리를 수행하는데 필요한 계산 작업
+		// 1) 전체 게시물 갯수
+		int listCount = boardService.getBoardListCount();
+		
+		// 2) 한 페이지에서 표시할 목록(페이지당 페이지 번호) 갯수 설정
+		int pageListLimit = 3;	// 페이지 당 페이지 번호 갯수를 3으로 설정 (1 2 3 or 4 5 6)
+		
+		// 3) 최대 페이지번호 계산
+		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+		// 단, 최대 페이지번호가 0일 경우(DB에 글이 한건도 없을 경우) 기본값 1
+		if (maxPage == 0) {
+			maxPage = 1;
+		}
+		
+		// 4) 현재 페이지에서 보여줄 시작 페이지 번호 계산
+		int startPage = (pageNum - 1) / pageListLimit * pageListLimit + 1;
+		// 5) 현재 페이지에서 보여줄 마지막 페이지 번호 계산
+		int endPage = startPage + pageListLimit - 1;
+		// 6) 단, 마지막 페이지 번호(endPage) 값이 최대 페이지 번호(maxPage) 보다 클 경우
+		//    마지막 페이지 번호를 최대 페이지 번호로 교체
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		
+		// 전달받은 페이지번호가 1보다 작거나 최대 페이지번호보다 클 경우
+		// "fail.jsp" 페이지 포워딩을 통해 "해당 페이지는 존재하지 않습니다!" 출력
+		// 1페이지 목록으로 이동하도록 처리
+		if (pageNum < 1 || pageNum > maxPage) {
+			model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
+			model.addAttribute("url", "BoardList");
+			return "result/fail";
+		}
+		
+		
+		// --------------------------------------------------
+		// 3. 페이징 정보를 관리하는 PageInfo 객체 생성 및 계산결과 저장
+		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage, pageNum);
+		model.addAttribute("pageInfo", pageInfo);
+		
+		List<BoardVO> boardList = boardService.getBoardList(startRow, listLimit);
+		
 		model.addAttribute("boardList", boardList);
 		return "board/board_list";
 	}
+	
+	//[글 상세조회 비지니스 로직]
+	@GetMapping("BoardDetail")
+	public String boardDetail(int board_num, Model model) {
+		
+		BoardVO board = boardService.getBoard(board_num);
+		
+		if (board == null) {
+			model.addAttribute("msg", "존재하지 않는 게시물입니다");
+			return "result/fail";
+		}
+		model.addAttribute("board", board);
+		
+		return "board/board_detail";
+	}
+	
 	
 	
 	
