@@ -25,8 +25,19 @@ public class BoardService {
 		return mapper.getBoardListCount();
 	}
 	
-	public BoardVO getBoard(int board_num) {
+	// 게시물 상세정보 조회 요청
+	public BoardVO getBoard(int board_num, boolean isIncrease) {
+		
+		if(isIncrease) {
+			mapper.updateReadCount(board_num);
+		}
 		return mapper.getBoard(board_num);
+
+		
+	}
+	
+	public int removeBoard(BoardVO board) {
+		return mapper.removeBoard(board);
 	}
 	
 }

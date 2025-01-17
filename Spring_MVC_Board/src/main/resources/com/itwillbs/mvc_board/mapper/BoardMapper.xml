@@ -11,6 +11,8 @@
 		  FROM BOARD
 		</selectKey>
 	
+
+	
 	INSERT INTO BOARD
 	VALUES (#{board_num}
 		 , #{board_name}
@@ -50,10 +52,25 @@
 	<!-- 게시물 상세정보 조회 -->
 	<select id="getBoard" resultType="board">
 	SELECT *
-	FROM BOARD
-	WHERE BOARD_NUM = #{board_num}
-	
+	  FROM BOARD
+	 WHERE BOARD_NUM = #{board_num} 
 	</select>
+	
+	<delete id="removeBoard" parameterType="board">
+	DELETE FROM BOARD
+	 WHERE BOARD_NUM = #{board_num}
+	</delete>
+	
+	
+	<update id="updateReadCount">
+		UPDATE BOARD
+			SET BOARD_READCOUNT = (SELECT *
+									FROM (SELECT BOARD_READCOUNT +1
+											FROM BOARD
+											WHERE BOARD_NUM = #{board_num})A)
+		WHERE board_num = #{board_num}
+	
+	</update>
 	
 
 </mapper> 

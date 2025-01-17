@@ -36,6 +36,9 @@
 		text-align: left;
 		padding-left: 20px;
 	}
+	#listForm .board_subject:hover {
+		background-color: #FFC19E
+	}
 	
 	#pageList {
 		margin: auto;
@@ -152,18 +155,17 @@
 	// 게시물 제목열 클릭 이벤트 핸들링
 	$(".board_subject").on("click", function(event){
 		
-		// [클릭된 제목에 해당하는 게시물의 글 번호 가져오기]
+		// [ 클릭된 제목에 해당하는 게시물의 글 번호 가져오기 ]
 		// 1) 클릭 대상 요소의 부모 탐색하여 해당 부모의 자식들 중
 		//    클래스 선택자가 "board_num"인 요소 탐색
 // 		let parent = $(event.target).parent();
-	
 // 		let board_num = $(parent).find(".board_num").text();
 		
 		// 2) 클릭 대상 요소의 형재 노드 탐색
 		let board_num = $(event.target).siblings(".board_num").text();
-
-		//"BoardDetail" 서블릿 주소 요청
-		// => 파라미터 : 글번호(위에서 탐색한 번호), 페이지 번호(pageInfo 객체의 pageNum 속성값)
+		
+		// "BoardDetail" 서블릿 주소 요청
+		// => 파라미터: 글번호(위에서 탐색한 번호), 페이지 번호(pageInfo 객체의 pageNum 속성값)
 		location.href = "BoardDetail?board_num=" + board_num + "&pageNum=${pageInfo.pageNum}";
 	});
 	
