@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mvc_board2.mapper.MemberMapper">
+
+	<insert id="registMember" parameterType="member">
+		INSERT INTO MEMBER
+		VALUES (null
+			 , #{name}
+			 , #{id}
+		     , #{passwd}
+		     , #{post_code}
+		     , #{address1}
+		     , #{address2}
+		     , #{email}
+		     , #{job}
+		     , #{gender}
+		     , #{hobby}
+		     , #{motivation}
+		     , NOW()
+			 , null
+		     , 1
+		     , 'N')
+	</insert>
+
+	<select id="checkId" parameterType="map">
+		SELECT COUNT(*) AS CNT
+		  FROM MEMBER
+		 WHERE ID = #{id} 
+	</select>
+
+	<select id="getMember" parameterType="member" resultType="member">
+		SELECT *
+		  FROM MEMBER
+		 WHERE ID = #{id}
+		   AND PASSWD = #{passwd}
+	</select>
+	
+	<select id="getMemberInfo">
+		SELECT *
+		  FROM MEMBER
+		 WHERE ID = #{id} 
+	</select>
+	
+	<update id="modifyMember" parameterType="map">
+		UPDATE MEMBER
+	       SET NAME = #{name}
+		<if test="!passwd.equals('')">
+			 , PASSWD = #{passwd} -- 비밀번호 변경시에만		
+		</if>  
+	         , POST_CODE = #{post_code}
+	         , ADDRESS1 = #{address1}
+	         , ADDRESS2 = #{address2}
+	         , EMAIL = CONCAT(#{email1}, '@', #{email2})
+	         , JOB = #{job}
+		     , GENDER = #{gender}
+	         , HOBBY = #{hobby}
+	         , MOTIVATION = #{motivation}
+	   	 WHERE ID = #{id}
+	</update>
+	
+	<update id="updateStatus" parameterType="map">
+		UPDATE MEMBER
+		   SET WITHDRAW_DATE = NOW()
+			 , MEMBER_STATUS = 3
+		 WHERE ID = #{id}	 
+	</update>
+
+	<insert id="mergeMailInfo" parameterType="mail">
+		INSERT INTO MAIL_AUTH_INFO
+			 ( EMAIL
+		     , AUTH_CODE)
+		VALUES 
+			 ( #{email}
+			 , #{auth_code})
+		   ON DUPLICATE KEY UPDATE
+		   AUTH_CODE = #{auth_code}
+	</insert>
+
+	<select id="selectMailAuthInfo" resultType="mail">
+		SELECT *
+		  FROM MAIL_AUTH_INFO
+		 WHERE email = #{email} 
+	</select>
+
+	<update id="updateMailAuthStatus" parameterType="mail">
+		UPDATE MEMBER
+		   SET MAIL_AUTH_STATUS = 'Y'
+		 WHERE EMAIL = #{email}
+	</update>
+	
+	<delete id="deleteMailAuthInfo" parameterType="mail">
+		DELETE FROM MAIL_AUTH_INFO
+   		 WHERE email = #{email}
+	</delete>
+	
+
+
+</mapper> 

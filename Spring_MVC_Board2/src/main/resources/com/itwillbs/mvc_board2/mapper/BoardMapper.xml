@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mvc_board2.mapper.BoardMapper">
+
+	<insert id="registBoard" parameterType="board">
+	
+		<selectKey keyProperty="board_num" resultType="int" order="BEFORE">
+		SELECT IFNULL(MAX(BOARD_NUM), 0) + 1
+		  FROM BOARD
+		</selectKey>
+	
+	INSERT INTO BOARD
+	VALUES (#{board_num}
+		 , #{board_name}
+	     , #{board_subject}
+	     , #{board_content}
+	     , #{board_file}
+	     , #{board_file1}
+	     , #{board_file2}
+	     , #{board_file3}
+	     , #{board_num} -- 글 번호 board_num 과 같아야함
+	     , 0			-- 들여쓰기레벨(board_re_lev)
+	     , 0			-- 답글순서번호(board_re_seq)
+	     , 0			-- 조회수(board_readcount)
+	     , NOW()
+	     , #{board_writer_ip} )
+	</insert>
+	
+	<select id="getBoardListCount" resultType="int">
+	SELECT COUNT(*)
+	  FROM BOARD
+	</select>
+	
+	<!-- 
+	정렬: 참조글번호(board_re_ref) 기준 내림차순,
+		순서번호(board_re_seq)기준 오름차순
+	Limit 절을 활용하여 조회할 게시물 갯수 제한(startRow 행부터 listLimit 만큼 조회)	 
+		 -->
+	<select id="getBoardList" resultType="board">
+	-- getBoardList
+	SELECT *
+	  FROM BOARD
+	 ORDER BY BOARD_RE_REF DESC 
+	 	 , BOARD_RE_SEQ ASC		 
+	 LIMIT #{startRow}, #{listLimit} 
+	</select>
+	
+	<!-- 게시물 상세정보 조회 -->
+	<select id="getBoard" resultType="board">
+	SELECT *
+	  FROM BOARD
+	 WHERE BOARD_NUM = #{board_num} 
+	</select>
+	
+	<delete id="removeBoard" parameterType="board">
+	DELETE FROM BOARD
+	 WHERE BOARD_NUM = #{board_num}
+	</delete>
+	
+	<update id="updateReadCount">
+		UPDATE BOARD
+		   SET board_readcount = board_readcount + 1
+		 WHERE board_num = #{board_num} 	
+	</update>
+	
+	<update id="modifyBoard" parameterType="board">
+		UPDATE BOARD
+		   SET board_subject = #{board_subject}
+		   	 , board_content = #{board_content}
+		 WHERE board_num = #{board_num}  
+	</update>
+
+</mapper> 

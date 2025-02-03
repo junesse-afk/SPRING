@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 
+	<typeAlias type="실제 클래스타입(패키지명 포함)" alias="별칭"/>
+	 -->
+	<typeAliases>
+		<typeAlias type="com.itwillbs.mvc_board2.vo.MemberVO" alias="member"/>
+		<typeAlias type="com.itwillbs.mvc_board2.vo.BoardVO" alias="board"/>
+		<typeAlias type="com.itwillbs.mvc_board2.vo.MailAuthInfo" alias="mail"/>
+	</typeAliases>
+
+</configuration>
