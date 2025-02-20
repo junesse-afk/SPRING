@@ -8,6 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <title>MVC 게시판</title>
+<!-- Font Awesome 5 Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <!-- 외부 CSS 파일(css/default.css) 연결하기 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -94,7 +97,17 @@
 				<c:forEach var="board" items="${boardList }">
 					<tr>
 						<td class="board_num">${board.board_num }</td>
-						<td class="board_subject">${board.board_subject }</td>
+						<!-- 답글 관련 처리
+						들여쓰기(공백=&nbsp;)추가 후 답
+						 -->
+						
+						<td class="board_subject">
+							<c:if test="${board.board_re_lev>0}">
+							<c:forEach begin="1" end="${board.board_re_lev}">&nbsp;&nbsp;
+							</c:forEach>
+							<i class="fa-solid fa-reply"></i>
+							</c:if>
+							${board.board_subject }</td>
 						<td>${board.board_name }</td>
 						<td>
 						<%--

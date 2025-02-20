@@ -1,7 +1,9 @@
 package com.itwillbs.mvc_board.handler;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpStatusCodeException;
 
 // 시스템 상에서 발생 가능한 예외 (HTTP 4xx 에러 제외)를 처리하는 전용 핸들러 정의
 // => 예외 처리 핸들러 클래스 정의 시 클래스 선언부 상단에 @ControllerAdvice 어노테이션 지정
@@ -24,5 +26,36 @@ public class MyExceptionHandler {
 		// 예외 발생 시 사용자에게 응답으로 전송할 뷰페이지 지정
 		// => 컨트롤러에서 포워딩 하는 방법과 동일
 		return "result/error_exception";
-	}
+		
+		//-------------------------------------
+		// AOP를 활용한 id값 null 체크시 발생시킨 HttpStatusCodeException 예외 처리
+		
+		}
+	
+		@ExceptionHandler(HttpStatusCodeException.class)
+		public String httpStatusCodeException(HttpStatusCodeException e, Model model) {
+			e.printStackTrace();
+			
+			String msg = "";
+			String url = "";
+			
+			switch (e.getStatusCode()) {
+			case UNAUTHORIZED: 
+				String str = e.getStatusText();
+				//"회원만 이용 가능합니다!|/MemberLogin"
+				
+				msg = str.split("|")[0];
+				url = str.split("|")[1];
+				
+				break;
+
+
+			}
+			
+			model.addAttribute("msg", msg);
+			model.addAttribute("url", url);
+			
+			return "result/fail";
+		}
+	
 }

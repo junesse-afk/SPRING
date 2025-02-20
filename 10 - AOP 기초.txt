@@ -1,0 +1,163 @@
+[ AOP(Aspect-Oriented Programming) ]
+- 관점 지향 프로그래밍이라고 하며, 객체 지향 프로그래밍(OOP)을 보완하기 위한 프로그래밍 기법
+- 클래스 정의 시 각 클래스만의 고유한 핵심 기능(Core Concerns = 핵심 관심사)들을 정의할 때
+  각 클래스에서 공통적으로 사용하는 부가 기능(Cross-cutting Concerns = 횡단 관심사)들을 
+  반복적으로 코드에 기술하는 대신 별도의 모듈로 분리(= 관심사 분리)하여
+  개발자는 핵심 비즈니스 로직만 작성하고 AOP 에 의해 관심사에 해당하는 모듈이 실행되도록 하는 것
+  ex) 데이터베이스 작업 시 비즈니스 로직 전후에 트랜잭션(Transaction)을 적용해야할 경우
+      1) 실행할 데이터베이스 작업을 현재 실행중인 트랜잭션 or 새로운 트랜잭션에서 실행할지 결정
+      2) 비즈니스 로직 실행
+      3) 정상적으로 성공 시 커밋, 예외 발생 시 롤백
+      => 스프링에서는 1번과 3번 동작에 대해 AOP 형태로 처리하는 @Transactional 어노테이션 제공
+
+< AOP 주요 개념(용어) >
+1) Target : 순수한 비즈니스 로직(Core Concerns)이며, Advice 가 적용될 대상
+2) Proxy(대행, 대리) : Target 을 감싸고 있는 것(객체) 
+                       (스프링에서는 대부분 오토 프록시(Auto-proxy) 방식을 사용)
+3) JoinPoint : Target 객체가 가진 메서드
+               (Proxy 객체를 통해 Target 객체의 JoinPoint 를 호출하게 됨)
+4) Advice : Target 에 제공할 기능을 담고 있는 모듈(관심사를 분리해 놓은 코드)
+            => XML 설정을 통해 Target 에 적용할 Advice 지정
+               (Before Advice, After Returning Advice, After Throwing Advice, After Advice, Around Advice)
+5) Pointcut : 관심사와 비즈니스 로직이 결합되는 지점(Target 을 지정하기 위한 선언(설정))
+              => 결과적으로 Target 은 Pointcut 에 의해 자신에게 없는 기능을 갖게 됨
+6) Weaving : Advice 를 Target 에 적용하는 행위
+참고) Aspect = Pointcut + Advice 의 개념으로 Advice 보다 더 포괄적인 개념이다!
+
+
+< JDK Proxy vs CGLib Proxy >
+1) JDK Proxy : Target 의 상위 인터페이스를 상속받아 생성한 프록시
+2) CGLib Proxy : Target 클래스를 상속받아 생성한 프록시
+                 JDK Proxy 에 비해 런타임 에러 발생 가능성이 낮음(일반적으로 선택)
+=> 스프링에서는 대부분 오토 프록시(Auto-proxy) 방식을 사용
+   (Target 객체를 상속받아 프록시 객체를 자동으로 생성하여 사용함)
+   (따라서, Target 의 메서드가 private 접근제한자로 선언되면 호출이 불가능해진다!)
+
+< 스프링 AOP 의 대표적인 예시 - @Trasactional 의 동작 >
+1. @Transactional 어노테이션이 붙은 메서드(Target)를 호출하면 AOP Proxy 에 의해 요청 가로채기(Intercept) 발생
+2. AOP Proxy 에서 Transaction Advisor 에 의해 트랜잭션 전처리 수행(트랜잭션 시작 및 Auto commit 기능 해제 등)
+   그 외 다른 부가 기능이 있을 경우 Custom Advisor 에서 처리 수행
+3. 각 Advisor 에서의 처리 종료 후 Target method 수행
+4. Target method 수행 종료 후 Commit, Rollback 여부 결정
+
+< 스프링에서 AOP 구현하는 방법 - @AspectJ 어노테이션 활용법 >
+1. pom.xml 에서 라이브러리 설정
+   1) Legacy Project 에 기본적으로 포함된 AspectJ 기본 런타임 라이브러리(aspectjrt) 버전을 
+      현재 자바(스프링)에 맞게 변경(1.9.8 부터 JDK 11 이상 필요, JDK 8 이하는 그 이전 버전 사용)
+   2) 개발자가 AOP 를 활용하여 개발할 때 AOP 처리 된 객체 생성에 필요한 Aspectjweaver 라이브러리 추가
+
+2. root-context.xml 설정
+   1) <context:component-scan base-package="" /> 태그를 통해 AOP 관련 클래스가 포함된 패키지 지정
+      => 주의! servlet-context.xml 에서 관리하지 않는 패키지여야함
+   2) <context:annotation-config></context:annotation-config> 태그를 통해 AOP 가 동작할 대상 빈 활성화
+      => 1번에서 대상 패키지를 스캔하기 때문에 현재 작업 과정 내에서 불필요한 어노테이션(생략 가능)
+   3) <aop:aspectj-autoproxy></aop:aspectj-autoproxy> 태그를 통해 오토 프록시 생성 설정 추가
+
+3. Advice 작성
+   1) Advice 클래스를 정의 및 스프링 빈으로 등록
+   2) @AspectJ 어노테이션 지정
+   3) Advice 메서드 정의
+      3-1) 메서드 상단에 Advice 에 해당하는 어노테이션 적용
+           ex) @Before, @After 등 Advice 이름에서 advice 글자를 제외하면 어노테이션 이름이 된다
+      3-2) Advice 어노테이션 뒤에 Pointcut 지정
+           - 기본 문법 : @XXX("Pointcut설정대상지정방법([리턴타입] [패키지명].[클래스명].[메서드명]([매개변수]))")
+           - Pointcut 을 설정할 대상을 지정하기 위해 
+             execution, within, this, args, annotation 등을 사용하며 일반적으로 execution 활용함
+             (execution : 메서드를 기준으로 Pointcut 을 설정)
+           - AspectJ 표현식 활용하여 execution 등의 뒤 () 안에 상세 Pointcut 지정
+             a) 리턴타입 : *, void, 데이터타입, !데이터타입
+             b) 패키지 : 일반적인 패키지 지정 방법 사용하며, 하위 패키지를 wildcard 로 처리하려면 . 사용
+                         ex) com.itwillbs.mvc_board.. => mvc_board 패키지 내의 모든 하위 패키지
+                             com.itwillbs.mvc_board..member => mvc_board 패키지 내의 모든 하위 패키지 내에서 member 패키지
+             c) 클래스 : 클래스명 그대로 지정. 클래스명 앞 뒤에 * 기호를 붙여 이름에 대한 wildcard 설정
+                         클래스명 뒤에 + 기호를 붙여 해당 클래스로부터 파생된 모든 클래스 및 인터페이스에 대한 wildcard 설정
+                         ex) *Service : xxxService 클래스
+                             MemberService+ : MemberService 클래스를 extends, implements 한 클래스까지 모두 지정
+             d) 메서드 : 메서드명 그대로 지정하며 * 기호 사용법 동일함
+             e) 메서드 파라미터 : 메서드에 전달할 파라미터의 타입을 지정
+                                  (복수개는 콤마로 구분하며, 실제 메서드 정의와 달리 클래스타입은 패키지명까지 기술)
+                                  * 기호는 매개변수 1개를 대체함
+                                  .. 기호는 매개변수 0개 이상을 대체함
+                                  ex) updateMember(..) : 매개변수 상관없이 이름이 updateMember() 인 메서드
+                                      updateMember(*) : 매개변수가 1개인 updateMember() 메서드
+                                      updateMember(com.itwillbs.mvc_board.vo.MemberVO, *, ..) 
+                                      : 매개변수가 2개 이상인 updateMember() 메서드로, 첫번째는 무조건 MemberVO 타입이어야 함
+             ex) @Before("execution(* com.itwillbs.mvc_board.service.*Service.*(..))")
+                 => service 패키지 내의 xxxService 클래스에 있는 매개변수 상관없이 모든 메서드를 Pointcut 으로 지정
+             => Pointcut 지정이 잘못됐을 경우 서버 시작 시 DEBUG 레벨에서 오류 메세지 확인 가능
+                2024-12-02 11:17:05 DEBUG [org.springframework.aop.aspectj.AspectJExpressionPointcut] 
+                Pointcut parser rejected expression [execution(* com.itwillbs.mvc_board.BoardController.*(..))]:  
+                java.lang.IllegalArgumentException: warning no match for this type name: 
+                com.itwillbs.mvc_board.BoardController [Xlint:invalidAbsoluteTypeName]
+
+=========================================================================================================
+[ 예제 - 트랜잭션 동작 여부를 매번 별도의 출력문 또는 로그 생성 코드 작성 없이 확인하는 방법 ]
+1. Advice 를 모아놓은 클래스(Advisor)를 정의하여 Target 지정
+2. Advice 메서드에서 콘솔 또는 로그를 통해 메세지 출력
+-------------
+@Aspect
+@Component
+public class TransactionAspect {
+	// AOP Advice 메서드 정의
+	// 정상적으로 등록 시 메서드 좌측 라인번호 옆에 화살표 표시됨
+	@Before("execution(* com.itwillbs.mvc_board.service.BoardService.*(..))") 
+	// => BoardService 의 모든 메서드가 포인트컷 대상이 됨
+	// => 해당 Target 메서드 호출 전 먼저 호출됨
+	public void beforeTransaction() {
+		System.out.println("트랜잭션 작업 전!");
+	}
+	
+	@AfterReturning("execution(* com.itwillbs.mvc_board.service.BoardService.*(..))")
+	// => 해당 Target 메서드 호출 후 예외가 발생하지 않으면 호출됨
+	public void commitTransaction() {
+		System.out.println("트랜잭션 커밋!!");
+	}
+	
+	@AfterThrowing("execution(* com.itwillbs.mvc_board.service.BoardService.*(..))")
+	// => 해당 Target 메서드 호출 후 예외가 발생하면 호출됨
+	public void rollbackTransaction() {
+		System.out.println("트랜잭션 롤백!!");
+	}
+}
+
+=========================================================================================================
+[ 예제 - 로그인 여부 체크를 AOP 로 처리하는 방법 ]
+1. 로그인 체크에 사용할 커스텀 어노테이션 생성
+   1) 인터페이스 정의 과정에서 interface 선언문 바로 앞에 @ 기호 붙여서 커스텀 어노테이션으로 변경
+      또는 New - Annotation 메뉴를 통해 생성
+   2) 인터페이스 선언부 상단에 @Retention(RetentionPolicy.XXX) 어노테이션 적용하여 어노테이션 유지 범위 설정
+      이 어노테이션이 소스코드 컴파일 후 실행 과정에서도 유지가 되어야하므로 enum 타입 RetentionPolicy.RUNTIME 지정)
+      (RetentionPolicy.SOURCE - 컴파일 전, CLASS - 컴파일 후 클래스파일(기본값), RUNTIME - 런타임(계속 유지))
+   3) 인터페이스 선언부 상단에 @Target(ElementType.METHOD) 어노테이션 적용하여 어노테이션 사용 가능 대상 지정
+      이 어노테이션을 현재 프로젝트의 메서드에서 사용 가능하도록 enum 타입 ElementType.METHOD 지정)
+      (ElementType.TYPE : 클래스 및 인터페이스 등, FIELD : 필드, METHOD : 메서드 등)
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public @interface LoginCheck {
+		public static enum MemberRole {
+			ADMIN, USER
+		}
+      
+		public MemberRole userType() default MemberRole.USER; 
+	}
+
+2. 로그인 여부를 체크하는 Advice 를 갖는 LoginCheckAspect 클래스 정의
+
+3. Advice (loginCheck() 메서드) 정의
+   => 포인트컷 설정 시 어노테이션이 붙은 Target 의 경우 로그인 여부를 Target 실행 전에 판별해야하므로
+      @Before 어노테이션으로 지정
+   => 포인트컷 대상은 특정 메서드 등이 아닌 어노테이션이므로 @annotation(어노테이션인터페이스) 형태로 지정
+
+
+
+      
+
+
+
+
+
+
+
+
+

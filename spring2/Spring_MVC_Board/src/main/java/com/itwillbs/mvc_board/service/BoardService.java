@@ -1,6 +1,7 @@
 package com.itwillbs.mvc_board.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,19 @@ import com.itwillbs.mvc_board.vo.BoardVO;
 public class BoardService {
 	
 	@Autowired
-	BoardMapper mapper;
+	BoardMapper mapper; // mybatis
 	
 	public int registBoard(BoardVO board) {
-		return mapper.registBoard(board);
+		return mapper.registBoard(board); 
 	}
 	
 	public List<BoardVO> getBoardList(int startRow, int listLimit) {
+		
+//		//트랜잭션 확인용
+//		if(true) {
+//			throw new RuntimeException();
+//		}
+//		
 		return mapper.getBoardList(startRow, listLimit);
 	}
 	
@@ -41,9 +48,17 @@ public class BoardService {
 		return mapper.modifyBoard(board);
 	}
 	
+	public int removeBoardFile(Map<String, String> map) {
+		return mapper.removeBoardFile(map);
+	}
 	
 	
-	
-	
+	public int registReplyBoard(BoardVO board) {
+		//기존 답글들의 순번(seq) 조정을 위해 updateBoardReSeq() 메서드 호출
+		mapper.updateBoardReSeq(board);
+		
+		//답글 등록 작업 insertReplyBoard() 메서드 호출
+		return mapper.insertReplyBoard(board);
+	}
 	
 }

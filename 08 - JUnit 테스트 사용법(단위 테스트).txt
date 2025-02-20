@@ -1,0 +1,46 @@
+[ Junit 테스트 사용법 - 단위 테스트 ]
+1. pom.xml 에 Junit 라이브러리(기본으로 등록되어 있음)와 spring-test 라이브러리 추가(스프링 버전과 동일)
+
+2. 테스트 할 모듈에 해당하는 클래스를 src/test/java 의 원하는 패키지 내에 생성
+   => 주의! New - Class 메뉴가 아닌 New - Junit Test Case 메뉴로 클래스 생성해야함
+   참고) src/main/java -> src/test/java 폴더, src/main/resources -> src/test/resources 로 대체하여 테스트
+         => 필요한 테스트 파일들을 각 폴더에 위치시켜서 테스트 수행
+
+3. 클래스 생성 화면 다음 작업 설정
+   - 최상단 [ New Junit 4 Test ] 항목 선택
+   - Name 에 클래스명 지정(ex. BoardServiceDeleteTest)
+   - 맨 마지막 Class under test 항목의 Browse 버튼 클릭하여 테스트를 수행할 본래 클래스 탐색하여 선택
+     ex) BoardService 클래스의 기능 테스트를 위해서는 BoardService 클래스 선택
+   - Next 버튼 클릭
+
+4. TestMethods 항목에서 테스트 할 메서드 선택 후 Finish
+   => 클래스 내에 자동으로 해당 메서드에 대한 테스트 메서드가 생성됨
+      ex) removeBoard() 메서드 선택 시 testRemoveBoard() 메서드 생성됨
+
+5. 클래스 상단에 @RunWith 어노테이션 사용하여 테스트에 사용할 스프링 빈을 자동 주입하는 역할의 클래스 파일 지정
+   => spring-test 라이브러리 필수! (pom.xml 에서 등록)
+   => @RunWith(SpringJUnit4ClassRunner.class) 형식으로 지정(JUnit 버전에 따라 클래스가 달라질 수 있음)
+
+6. 클래스 상단에 @ContextConfiguration 어노테이션을 사용하여 테스트에 필요한 자원(XML 파일 등)을 수동으로 지정
+   => 기본적으로 root-context.xml 파일은 포함시키고, 나머지는 필요에 따라 추가
+   => @ContextConfiguration(locations = {"root-context.xml"}) // 현재 클래스와 같은 경로에서 파일 탐색(복사 필요)
+      @ContextConfiguration(locations = {"classpath:/root-context.xml"}) // src/test/resources 내에서 탐색(복사 필요)
+      @ContextConfiguration(locations = {"file:src/main/resources/config/root-context.xml"}) // 실제 원본 파일 위치 탐색(복사 불필요)
+
+7. 클래스 내부에서 멤버변수로 의존성 주입 필요한 클래스는 동일하게 @AutoWired 활용(import 로 기존 클래스 포함시키기)
+
+8. 테스트 메서드 내부 코드 작성
+
+9. 테스트 클래스 작성 완료 후 실행
+   => 실행할 테스트 클래스 우클릭 - Run As - JUnit Test 메뉴로 실행 필수!
+   => 오류 발생 시 JUnit 탭에 오류 메세지 출력됨
+   => 오류 해결 후 JUnit 탭에 Rerun Test 또는 Rerun Test Failures First 클릭하여 재실행
+
+
+
+
+
+
+
+
+

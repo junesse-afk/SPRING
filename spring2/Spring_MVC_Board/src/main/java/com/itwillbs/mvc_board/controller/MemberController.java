@@ -48,13 +48,13 @@ public class MemberController {
 		 * [ BCryptPasswordEncoder 클래스를 활용한 패스워드 단방향 암호화 ]
 		 * => spring-security-web 또는 spring-security-crypto 라이브러리 활용
 		 * */
-		String securedPass = passwordEncoder.encode(member.getPasswd());
-		System.out.println("평문: " + member.getPasswd());
-		System.out.println("암호화: " + securedPass);
-		// => 단, 매번 생성되는 암호문은 솔팅에 의해 (Salt 값에 의해) 항상 달라진다!
-		
-		// 암호화된 패스워드로 덮어쓰기
-		member.setPasswd(securedPass);
+//		String securedPass = passwordEncoder.encode(member.getPasswd());
+//		System.out.println("평문: " + member.getPasswd());
+//		System.out.println("암호화: " + securedPass);
+//		// => 단, 매번 생성되는 암호문은 솔팅에 의해 (Salt 값에 의해) 항상 달라진다!
+//		
+//		// 암호화된 패스워드로 덮어쓰기
+//		member.setPasswd(securedPass);
 		
 		int insertCnt = memberService.registMember(member);
 		
@@ -124,9 +124,9 @@ public class MemberController {
 		if (dbMember == null) {
 			model.addAttribute("msg", "아이디가 없습니다");
 			return "result/fail";
-		} else if (!passwordEncoder.matches(member.getPasswd(), dbMember.getPasswd())) {
-			model.addAttribute("msg", "비밀번호가 틀립니다.");
-			return "result/fail";
+//		} else if (!passwordEncoder.matches(member.getPasswd(), dbMember.getPasswd())) {
+//			model.addAttribute("msg", "비밀번호가 틀립니다.");
+//			return "result/fail";
 		} else if (dbMember.getMember_status() == 3){
 			model.addAttribute("msg", "탈퇴한 회원입니다.");
 			return "result/fail";

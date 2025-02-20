@@ -55,7 +55,7 @@
 				<tr>
 					<th>주소</th>
 					<td>
-						<input type="text" name="post_code" id="post_code" value="${member.post_code }" size="6" readonly=>
+						<input type="text" name="post_code" id="post_code" value="${member.post_code }" size="6" readOnly>
 						<input type="button" value="주소검색" id="btnSearchAddress"><br>
 						<input type="text" name="address1" id="address1" value="${member.address1 }" size="30" readonly placeholder="기본주소"><br>
 						<input type="text" name="address2" id="address2" value="${member.address2 }" size="30" placeholder="상세주소">

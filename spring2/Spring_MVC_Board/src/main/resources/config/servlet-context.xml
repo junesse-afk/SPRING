@@ -4,9 +4,11 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
@@ -28,7 +30,70 @@
 	<context:component-scan base-package="com.itwillbs.mvc_board.controller" />
 	<!-- 주의! controller 패키지만 명시했으므로 나머지 패키지의 클래스들은 스프링빈으로 등록되지 못함 -->
 	<!-- 웹과 관련없는 Service 등의 패키지는 root-context.xml 에서 관리하도록 추가로 등록 -->
+
+	<!-- 오토 프록시 (Auto-Proxy) 기능을 통해 객체 생성을 하기 위한 설정 -->
+	<!-- 
+		root-context.xml에서 context:component-scan 태그에 service, handler, aop 패키지만 지정되어
+		해당 패키지의 클래스들만 오토 프록시 기능이 활성화 된다!
+		따라서, 컨트롤러에서 AOP 기능을 활용하려면 컨트롤러를 관리하는 servlet-context.xml 파일에서
+		해당 컨트롤러의 패키지를 context:component-scan 태그로 등록하고
+		aop:aspectj-autoproxy 태그를 추가하여 오토프록시 활성화 필수!
+	 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+
+
 	
 <!-- 	<tx:annotation-driven/> -->
+
+	<!--  ============================================================ -->
+	<!-- 
+	파일 업로드 처리를 위해 form 태그에 enctype="multipart/form-data" 속성을 추가했을 경우
+	스프링 컨트롤러에서 폼 파라미터 데이터 처리를 위해(또는 MultipartFile 타입 객체 처리 위해)
+	org.springframework.web.multipart.commons.CommonsMultipartResolver 객체 설정 필수!
+	(꼭 MultipartFile 타입 객체를 사용하지 않더라도 request 객체를 통한 파라미터 처리가 가능해짐)
+	=> bean 태그(현재 servlet-context.xml 파일에서는 <beans:bean> 태그) 사용하여 객체 설정
+	=> id 속성값은 "muiltipartResolver" 고정
+	=> class 속성값은 해당 라이브러리의 클래스 지정
+	=> <beans:bean> 태그 사이에 <beans:property> 태그를 통해 파일 업로드 옵션(사이즈, 인코딩) 설정
+	   이 때, name 속성값은 고정된 값 사용
+	-->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- maxUploadSize 속성 : 파일 업로드 시 최대 파일 사이즈 지정(Byte 단위) => 10MB 로 제한 설정 -->
+		<beans:property name="maxUploadSize" value="10485760"></beans:property>
+		<!-- defaultEncoding 속성 : 파일명에 한글 등의 아스키코드 외의 문자 인코딩 방식 설정(UTF-8) -->
+		<beans:property name="defaultEncoding" value="UTF-8"></beans:property>
+	</beans:bean> 
+	 
+	 <!-- HandlerInterceptor를 활용한 세션 가로채기 설정(AOP로 동일하게 수행할 경우 주석 필수!) -->
+	 <!-- 1)실질적인 가로채기 기능을 수행할 인터셉터 클래스 빈으로 생성(id 속성값은 아무거나) -->
+<!-- 	 <beans:bean id="loginInterceptor" class="com.itwillbs.mvc_board.handler.LoginIntercepter"></beans:bean> -->
+
+	<!-- 2)요청에 대한 인터셉터 연결 -->
+<!-- 	<interceptors> -->
+<!-- 		<interceptor> -->
+			<!-- 2-1) 세션 가로채기가 필요한 요청 주소 -->
+			<!-- 모든 요청 주소를 인터셉트 -->
+<!-- 			<mapping path="/*"/> -->
+			
+<!-- 			<mapping path="/BoardWrite"/> -->
+<!-- 			<mapping path="/BoardDelete"/> -->
+<!-- 			<mapping path="/BoardModify"/> -->
+			
+			<!-- 2-2) 세션 가로채기 대상에서 제외 시킬 요청 주소 (생략가능) -->
+			<!--  2-1번 과정에서 불특정 다수의 대상("/*")이 지정됐을때 제외시킬 대상 지정 -->
+<!-- 			<exclude-mapping path="/BoardList"/> -->
+<!-- 			<exclude-mapping path="/BoardDetail"/> -->
+			
+			<!-- 2-3) 요청에 대한 인터셉터 지정 -->
+<!-- 			<beans:ref bean="loginInterceptor"/> -->
+			
+			<!-- 2-3 과정을 생략하고 1번 내용을 intercceptor 태그 내에 직접 기술해도됨 -->
+			<!-- 단, 다른 인터셉터 추가할 경우 현재 인터셉터 필요 시 다시 기술해야함 -->
+			<!-- <beans:bean id="loginInterceptor" class="com.itwillbs.mvc_board.handler.LoginIntercepter"></beans:bean> -->
+<!-- 		</interceptor> -->
+<!-- 	</interceptors> -->
+
+
+
 
 </beans:beans>

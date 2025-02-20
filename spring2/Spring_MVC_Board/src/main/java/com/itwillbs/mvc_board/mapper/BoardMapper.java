@@ -1,6 +1,7 @@
 package com.itwillbs.mvc_board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +31,10 @@ public interface BoardMapper {
 	public void updateReadCount(@Param("board_num") int board_num);
 	
 	public int modifyBoard(BoardVO board);
+	
+	public int removeBoardFile(Map<String, String> map);
+	
+	public void updateBoardReSeq(BoardVO board);
+	
+	public int insertReplyBoard(BoardVO board);
 }

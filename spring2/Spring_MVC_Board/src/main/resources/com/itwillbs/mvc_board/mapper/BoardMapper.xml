@@ -69,7 +69,76 @@
 		UPDATE BOARD
 		   SET board_subject = #{board_subject}
 		   	 , board_content = #{board_content}
+		   	 <if test="!board_file1.equals('')">
+		   	 , board_file1 = #{board_file1} -- board_file1 컬럼 UPDATE
+		   	 </if>
+		   	 <if test="!board_file2.equals('')">
+		   	 , board_file2 = #{board_file2} -- board_file2 컬럼 UPDATE
+		   	 </if>
+		   	 <if test="!board_file3.equals('')">
+		   	 , board_file3 = #{board_file3} -- board_file3 컬럼 UPDATE
+		   	 </if>
 		 WHERE board_num = #{board_num}  
 	</update>
+	
+	<!-- 게시물 내의 파일 정보 삭제 - UPDATE -->
+	<!-- 글번호(board_num)가 일치하는 레코드의 해당 파일에 대한 컬럼값을 널스트링으로 수정 -->
+	<update id="removeBoardFile">
+	UPDATE BOARD
+<!-- 	   SET board_file${index} = '' -->
+	   SET
+	<choose>
+		<when test="index eq 1">board_file1 = ''</when>
+		<when test="index eq 2">board_file2 = ''</when>
+		<when test="index eq 3">board_file3 = ''</when>
+	</choose>
+	 WHERE BOARD_NUM = #{board_num}
+	</update>
+	<!-- ========================================================= -->
+	<!-- 답글 등록 -->
+	
+	<!-- 새 답글 등록을 위한 기존 답글 등의 순번 조정 -update -->
+	<!-- => 참조글번호(board_re_ref)가 대상(원본) 게시물의 참조글 번호와 비교 -->
+	<!--  순서번호(board_re_seq)가 대상 게시물의 순번보다 더 큰 레코드들의 순번 1씩 증가 -->
+	<update id="updateBoardReSeq" parameterType="board">
+	UPDATE BOARD
+		SET board_re_seq = board_re_seq+1
+		WHERE 1=1
+		AND board_re_ref = #{board_re_ref}
+		AND board_re_seq > #{board_re_seq}
+	</update>
+	
+	<!-- 새 답글 등록 -insert -->
+	<!-- =>기본적으로 새 글 등록 작업과 대부분 동일하지만
+		참조글번호는 전달받은 원본글의 참조글 번호를 그대로 사용하고
+		순서번호와 들여쓰기 레벨은 전달받은 원본글의 값 +1 처리 후 사용
+	 -->
+	
+	<update id="insertReplyBoard" parameterType="board">
+		<selectKey keyProperty="board_num" resultType="int" order="BEFORE">
+		SELECT IFNULL(MAX(BOARD_NUM), 0) + 1
+		  FROM BOARD
+		</selectKey>
+	
+	INSERT INTO BOARD
+	VALUES (#{board_num}
+		 , #{board_name}
+	     , #{board_subject}
+	     , #{board_content}
+	     , #{board_file}
+	     , #{board_file1}
+	     , #{board_file2}
+	     , #{board_file3}
+	     , #{board_re_ref} 				-- 참조글번호(전달받은 원본글의 값)
+	     , #{board_re_lev}+1 			-- 들여쓰기레벨(전달받은 원본글의 lev값 +1)
+	     , #{board_re_seq}+1			-- 답글순서번호(전달받은 원본글의 seq값 +1)
+	     , 0							-- 조회수(board_readcount)
+	     , NOW()
+	     , #{board_writer_ip} )
+	</update>
+	
+	
+	
+	
 
 </mapper> 

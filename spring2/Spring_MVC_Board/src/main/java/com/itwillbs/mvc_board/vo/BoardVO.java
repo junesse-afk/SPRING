@@ -2,6 +2,8 @@ package com.itwillbs.mvc_board.vo;
 
 import java.sql.Timestamp;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 /*
@@ -54,6 +56,14 @@ public class BoardVO {
 	private String board_file2;
 	private String board_file3;
 	// --------------------------------------------------------------------------------
+	
+	// 실제 서버 상에 업로드되는 파일을 관리
+	// HTML 폼 상에서 input type="file" 태그의 name 속성명과 동일한 변수를 선언
+	private MultipartFile[] file; // multiple
+	private MultipartFile file1; // 단일
+	private MultipartFile file2; // 단일
+	private MultipartFile file3; // 단일
+	
 	
 	private int board_re_ref;
 	private int board_re_lev;
